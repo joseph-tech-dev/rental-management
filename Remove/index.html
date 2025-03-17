@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <title>Property Management - Room Selection</title>
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #F5F7FA;
+            --success-color: #5cb85c;
+            --danger-color: #d9534f;
+            --warning-color: #f0ad4e;
+            --text-color: #333;
+            --light-gray: #e9ecef;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .hero {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+        }
+        
+        .filters {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: #3A7EC5;
+        }
+        
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .property-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .property-image {
+            height: 200px;
+            background-color: #ddd;
+            position: relative;
+        }
+        
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit:contain;
+        }
+        
+        .property-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+        
+        .status-vacant {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .status-occupied {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .property-details {
+            padding: 1.5rem;
+        }
+        
+        .property-details h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .property-meta {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .property-meta-item {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .property-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .property-description {
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .room-item {
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .room-vacant {
+            background-color: rgba(92, 184, 92, 0.1);
+            border: 1px solid var(--success-color);
+        }
+        
+        .room-occupied {
+            background-color: rgba(217, 83, 79, 0.1);
+            border: 1px solid var(--danger-color);
+            cursor: not-allowed;
+        }
+        
+        .room-item h4 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .room-status {
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .room-vacant .room-status {
+            color: var(--success-color);
+        }
+        
+        .room-occupied .room-status {
+            color: var(--danger-color);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .modal-close {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .room-details {
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            margin-bottom: 0.75rem;
+        }
+        
+        .detail-label {
+            width: 120px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .detail-value {
+            flex: 1;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-row {
+                flex-direction: column;
+            }
+            
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Solar Plaza property Management System</div>
+                <nav>
+                    <ul>
+                    
+                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="property.html">Properties</a></li>
+                        <li><a href="tenant.html">Tenants</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="reports.html">Report</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Find Your Perfect Room</h1>
+            <p>Browse our available properties and select a room that suits your needs.</p>
+        </div>
+    </section>
+    
+    <main class="container">
+        <section class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="property-type">Room Type</label>
+                    <select id="property-type">
+                        <option value="all">All Rooms</option>
+                        <option value="Bedsitter">Bedsitter</option>
+                        <option value="1 bedroom">1 Bedroom</option>
+                        <option value="2 Bedroom">2 Bedroom</option>
+                        <option value="3 Bedrooms">3 Bedrooms</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="price-range">Price Range</label>
+                    <select id="price-range">
+                        <option value="all">All Prices</option>
+                        <option value="0-3500">KES0 - KES3500</option>
+                        <option value="3500-6000">KES3500 - KES6000</option>
+                        <option value="6000-1000">KES6000 - KES10000</option>
+                        <option value="10000+">KES10000+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="location">Floors</label>
+                    <select id="location">
+                        <option value="all">All Stories</option>
+                        <option value="Groundfloor">Groundfloor</option>
+                        <option value="Floor 1">Floor 1</option>
+                        <option value="Floor 2">Floor 2</option>
+                        <option value="Floor 3">Floor 3</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="search">Search</label>
+                    <input type="text" id="search" placeholder="Search by property name or features">
+                </div>
+            </div>
+            <button id="filter-button" class="btn">Apply Filters</button>
+        </section>
+        
+        <section class="property-grid" id="property-container">
+            <!-- Property cards will be dynamically generated here -->
+        </section>
+    </main>
+    
+    <!-- Room Selection Modal -->
+    <div id="room-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Room Details</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="room-details">
+                <div class="detail-item">
+                    <div class="detail-label">Room Number:</div>
+                    <div class="detail-value" id="modal-room-number">101</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Type:</div>
+                    <div class="detail-value" id="modal-room-type">Single</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Floor:</div>
+                    <div class="detail-value" id="modal-room-floor">1st Floor</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Size:</div>
+                    <div class="detail-value" id="modal-room-size">250 sq ft</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Rent:</div>
+                    <div class="detail-value" id="modal-room-rent">KES3500/month</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Features:</div>
+                    <div class="detail-value" id="modal-room-features">A cozy and affordable space perfect for individuals looking for a simple and functional living area. The room is well-ventilated, with ample natural light, and can accommodate basic furnishings. Ideal for students, bachelors, or those looking for budget-friendly accommodation</div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary modal-close-btn">Cancel</button>
+                <button class="btn" id="select-room-btn">Select Room</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample property data - this would typically come from your backend
+            const properties = [
+                {
+                    id: 1,
+                    name: "Ground Floor ",
+                    type: "Bedsitter",
+                    location: "Ground Floor",
+                    image: "images/bedsitter.jpeg",
+                    price: "KES 3500",
+                    description: "Modern apartments located near the river with great amenities.",
+                    rooms: [
+                        { id: 101, number: "101", type: "Bedsitter", floor: "Ground Floor", size: "400 sq ft", rent: 3500, status: "vacant", features: "Private bathroom, Air conditioning, Internet" },
+                        { id: 102, number: "102", type: "Bedsitter", floor: "Ground Floor", size: "550 sq ft", rent: 3500, status: "occupied", features: "Private bathroom, Air conditioning, Internet, Balcony" },
+                        { id: 103, number: "103", type: "Bedsitter", floor: "Ground Floor", size: "420 sq ft", rent: 3500, status: "vacant", features: "Private bathroom, Air conditioning, Internet" },
+                        { id: 104, number: "104", type: "Bedsitter", floor: "Ground Floor", size: "750 sq ft", rent: 3500, status: "occupied", features: "Private bathroom, Air conditioning, Internet, Balcony, Washer/Dryer" },
+                        { id: 105, number: "105", type: "Bedsitter", floor: "Ground Floor", size: "570 sq ft", rent: 3500, status: "vacant", features: "Private bathroom, Air conditioning, Internet, Balcony" }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Floor 1",
+                    type: " be1droom",
+                    location: "Floor 1",
+                    image: "images/1bedroom.jpeg",
+                    price: 6000,
+                    description: "A cozy unit with a separate bedroom, kitchen, and bathroom. Ideal for singles or couples seeking privacy and comfort",
+                    rooms: [
+                        { id: 201, number: "201", type: "1 bedroom", floor: "1st Floor", size: "200 sq ft", rent: 6000, status: "occupied", features: "Shared bathroom, Internet, Study desk" },
+                        { id: 202, number: "202", type: "1 bedroom", floor: "1st Floor", size: "300 sq ft", rent: 6000, status: "vacant", features: "Shared bathroom, Internet, Study desk" },
+                        { id: 203, number: "203", type: "1 bedroom", floor: "1st Floor", size: "200 sq ft", rent: 6000, status: "vacant", features: "Shared bathroom, Internet, Study desk" },
+                        { id: 204, number: "204", type: "1 bedroom", floor: "1st Floor", size: "200 sq ft", rent: 6000, status: "occupied", features: "Shared bathroom, Internet, Study desk" },
+                        { id: 205, number: "205", type: "1 bedroom", floor: "1st Floor", size: "300 sq ft", rent: 6000, status: "vacant", features: "Shared bathroom, Internet, Study desk" },
+                        { id: 206, number: "206", type: "1 bedroom", floor: "1st Floor", size: "200 sq ft", rent: 6000, status: "vacant", features: "Shared bathroom, Internet, Study desk" }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Floor 2",
+                    type: "2 Bedroom",
+                    location: "Floor 2",
+                    image: "images/2bedroom.jpeg",
+                    price: 10000,
+                    description: "Spacious and well-designed, perfect for small families or roommates. Includes a living area, kitchen, and bathroom.",
+                    rooms: [
+                        { id: 301, number: "301", type: "2 Bedroom", floor: "2nd Floor", size: "350 sq ft", rent: 10000, status: "occupied", features: "Private bathroom, Walk-in closet, Balcony" },
+                        { id: 302, number: "302", type: "2 Bedroom", floor: "2nd Floor", size: "250 sq ft", rent: 10000, status: "vacant", features: "Shared bathroom, Closet" },
+                        { id: 303, number: "303", type: "2 Bedroom", floor: "2nd Floor", size: "280 sq ft", rent: 10000, status: "vacant", features: "Shared bathroom, Closet, Garden access" },
+                        { id: 304, number: "304", type: "2 Bedroom", floor: "2nd Floor", size: "400 sq ft", rent: 10000, status: "occupied", features: "Private bathroom, Kitchenette, Separate entrance" }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Floor 3",
+                    type: "3 Bedroom",
+                    location: "Floor 3",
+                    image: "images/3bedroom.jpeg",
+                    price: 15000,
+                    description: "A large and comfortable unit for families, featuring three bedrooms, a living area, kitchen, and modern amenities.",
+                    rooms: [
+                        { id: 401, number: "401", type: "3 Bedroom", floor: "3rd Floor", size: "500 sq ft", rent: 15000, status: "vacant", features: "Open floor plan, High ceilings, City view" },
+                        { id: 402, number: "402", type: "3 Bedroom", floor: "3rd Floor", size: "480 sq ft", rent: 15000, status: "occupied", features: "Open floor plan, High ceilings" },
+                        { id: 403, number: "403", type: "3 Bedroom", floor: "3rd Floor", size: "550 sq ft", rent: 15000, status: "vacant", features: "Open floor plan, High ceilings, City view, Balcony" },
+                        { id: 404, number: "404", type: "3 Bedroom", floor: "3rd Floor", size: "520 sq ft", rent: 15000, status: "vacant", features: "Open floor plan, High ceilings, City view" }
+                    ]
+                }
+            ];
+            
+            const propertyContainer = document.getElementById('property-container');
+            const modal = document.getElementById('room-modal');
+            const modalClose = document.querySelectorAll('.modal-close, .modal-close-btn');
+            const selectRoomBtn = document.getElementById('select-room-btn');
+            const filterButton = document.getElementById('filter-button');
+            
+            let selectedRoom = null;
+            
+            // Display all properties on page load
+            displayProperties(properties);
+            
+            // Filter button click event
+            filterButton.addEventListener('click', function() {
+                const propertyType = document.getElementById('property-type').value;
+                const priceRange = document.getElementById('price-range').value;
+                const location = document.getElementById('location').value;
+                const searchTerm = document.getElementById('search').value.toLowerCase();
+                
+                // Filter properties based on selected criteria
+                let filteredProperties = properties;
+                
+                if (propertyType !== 'all') {
+                    filteredProperties = filteredProperties.filter(property => property.type === propertyType);
+                }
+                
+                if (location !== 'all') {
+                    filteredProperties = filteredProperties.filter(property => property.location === location);
+                }
+                
+                if (priceRange !== 'all') {
+                    const [min, max] = priceRange.split('-');
+                    if (max) {
+                        filteredProperties = filteredProperties.filter(property => 
+                            property.price >= parseInt(min) && property.price <= parseInt(max)
+                        );
+                    } else {
+                        // Handle 1500+ case
+                        filteredProperties = filteredProperties.filter(property => 
+                            property.price >= parseInt(min.replace('+', ''))
+                        );
+                    }
+                }
+                
+                if (searchTerm) {
+                    filteredProperties = filteredProperties.filter(property => 
+                        property.name.toLowerCase().includes(searchTerm) || 
+                        property.description.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                displayProperties(filteredProperties);
+            });
+            
+            // Display properties function
+            function displayProperties(props) {
+                propertyContainer.innerHTML = '';
+                
+                if (props.length === 0) {
+                    propertyContainer.innerHTML = '<div class="no-results">No properties match your criteria. Try adjusting your filters.</div>';
+                    return;
+                }
+                
+                props.forEach(property => {
+                    // Count vacant rooms
+                    const vacantRooms = property.rooms.filter(room => room.status === 'vacant').length;
+                    
+                    const propertyCard = document.createElement('div');
+                    propertyCard.className = 'property-card';
+                    
+                    propertyCard.innerHTML = `
+                        <div class="property-image">
+                            <img src="${property.image}" alt="${property.name}">
+                            <div class="property-status ${vacantRooms > 0 ? 'status-vacant' : 'status-occupied'}">
+                                ${vacantRooms > 0 ? vacantRooms + ' Vacant' : 'Fully Occupied'}
+                            </div>
+                        </div>
+                        <div class="property-details">
+                            <h3>${property.name}</h3>
+                            <div class="property-meta">
+                                <div class="property-meta-item">${capitalizeFirstLetter(property.type)}</div>
+                                <div class="property-meta-item">${capitalizeFirstLetter(property.location)}</div>
+                            </div>
+                            <div class="property-price">Starting at KES${Math.min(...property.rooms.map(room => room.rent))}/month</div>
+                            <div class="property-description">${property.description}</div>
+                            <h4>Available Rooms</h4>
+                            <div class="room-grid" data-property-id="${property.id}">
+                                ${property.rooms.map(room => `
+                                    <div class="room-item ${room.status === 'vacant' ? 'room-vacant' : 'room-occupied'}" 
+                                        data-room-id="${room.id}" 
+                                        data-room-number="${room.number}"
+                                        data-room-type="${room.type}"
+                                        data-room-floor="${room.floor}"
+                                        data-room-size="${room.size}"
+                                        data-room-rent="${room.rent}"
+                                        data-room-features="${room.features}"
+                                        data-room-status="${room.status}">
+                                        <h4>${room.number}</h4>
+                                        <div class="room-status">${capitalizeFirstLetter(room.status)}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                    
+                    propertyContainer.appendChild(propertyCard);
+                });
+                
+                // Add click event to room items
+                document.querySelectorAll('.room-item').forEach(roomItem => {
+                    roomItem.addEventListener('click', function() {
+                        const status = this.getAttribute('data-room-status');
+                        
+                        if (status === 'vacant') {
+                            // Get room details from data attributes
+                            const roomNumber = this.getAttribute('data-room-number');
+                            const roomType = this.getAttribute('data-room-type');
+                            const roomFloor = this.getAttribute('data-room-floor');
+                            const roomSize = this.getAttribute('data-room-size');
+                            const roomRent = this.getAttribute('data-room-rent');
+                            const roomFeatures = this.getAttribute('data-room-features');
+                            const roomId = this.getAttribute('data-room-id');
+                            
+                            // Populate modal with room details
+                            document.getElementById('modal-room-number').textContent = roomNumber;
+                            document.getElementById('modal-room-type').textContent = roomType;
+                            document.getElementById('modal-room-floor').textContent = roomFloor;
+                            document.getElementById('modal-room-size').textContent = roomSize;
+                            document.getElementById('modal-room-rent').textContent = `KES {roomRent}/month`;
+                            document.getElementById('modal-room-features').textContent = roomFeatures;
+                            
+                            // Store selected room
+                            selectedRoom = {
+                                id: roomId,
+                                number: roomNumber,
+                                type: roomType,
+                                rent: roomRent
+                            };
+                            
+                            // Show modal
+                            modal.style.display = 'flex';
+                        }
+                    });
+                });
+            }
+            
+            // Modal close event
+            modalClose.forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            });
+            
+            // Select room button click event
+            selectRoomBtn.addEventListener('click', function() {
+                if (selectedRoom) {
+                    // Here you would typically redirect to a form or registration page
+                    // For this example, we'll just alert and redirect to a login page
+                    alert(`You've selected Room ${selectedRoom.number}. Please log in or register to complete your reservation.`);
+                    window.location.href = 'login.html';
+                }
+            });
+            
+            // Close modal when clicking outside of it
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Helper function to capitalize first letter
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+        });
+    </script>
+</body>
+</html>
