@@ -1,17 +1,11 @@
 <?php
 
 session_start();
-
-// Enable error reporting for debugging
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 // Debug: Check session values
 //print_r($_SESSION);
 
 // Include database connection
-include '/opt/lampp/htdocs/project/config/db.php'; 
+include '../config/db.php'; 
 
 // Ensure database connection is valid
 if (!$conn) {
@@ -223,4 +217,4 @@ include '../includes/header.php';
     </form>
 </body>
 </html>
-<?php include '/opt/lampp/htdocs/project/includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>

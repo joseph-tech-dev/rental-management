@@ -169,12 +169,12 @@ include '/opt/lampp/htdocs/project/includes/header.php';
                     <?php if ($images): ?>
                         <?php foreach ($images as $image): ?>
                             <div class="swiper-slide">
-                                <img src="http://localhost/project/admin/<?php echo safe_value($image['image_url']); ?>" alt="Property Image">
+                                <img src="<?php echo safe_value($image['image_url']); ?>" alt="Property Image">
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <div class="swiper-slide">
-                            <img src="https://via.placeholder.com/800x400?text=No+Image+Available" alt="No Image">
+                            <img src="http://localhost/project/images/placeholder-for-image.jpg" alt="No Image">
                         </div>
                     <?php endif; ?>
                 </div>
@@ -183,6 +183,7 @@ include '/opt/lampp/htdocs/project/includes/header.php';
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
+
 
             <!-- Property Details -->
             <h2 class="property-title"><?php echo safe_value($property['name']); ?></h2>

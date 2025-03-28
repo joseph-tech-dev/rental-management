@@ -1,66 +1,77 @@
 <?php
-include '/opt/lampp/htdocs/project/config/db.php'; // Database connection
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// Fetch property images
+include '/opt/lampp/htdocs/project/config/db.php'; // Ensure you have a PDO database connection file
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $query = "SELECT * FROM property_images";
+    // Fetch all payments
+    $query = "SELECT * FROM payments";
     $stmt = $conn->prepare($query);
     $stmt->execute();
-    $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($images as $row) {
+    $payments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    foreach ($payments as $row) {
         echo "<tr>
-                <td>{$row['image_id']}</td>
+                <td>{$row['payment_id']}</td>
+                <td>{$row['tenant_id']}</td>
                 <td>{$row['property_id']}</td>
-                <td><img src='{$row['image_url']}' alt='Property Image' width='100'></td>
+                <td>{$row['amount']}</td>
+                <td>{$row['payment_date']}</td>
+                <td>{$row['payment_status']}</td>
                 <td>
-                    <button class='editBtn' data-id='{$row['image_id']}' data-property='{$row['property_id']}' data-url='{$row['image_url']}'>Edit</button>
-                    <button class='deleteBtn' data-id='{$row['image_id']}'>Delete</button>
+                    <button class='editBtn' data-id='{$row['payment_id']}' data-tenant='{$row['tenant_id']}' 
+                        data-property='{$row['property_id']}' data-amount='{$row['amount']}' 
+                        data-status='{$row['payment_status']}'>Edit</button>
+                    <button class='deleteBtn' data-id='{$row['payment_id']}'>Delete</button>
                 </td>
-              </tr>";
+            </tr>";
     }
-}
-
-// Add or Edit Property Image
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $image_id = $_POST['image_id'] ?? null;
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $payment_id = $_POST['payment_id'] ?? '';
+    $tenant_id = $_POST['tenant_id'];
     $property_id = $_POST['property_id'];
-    $image_url = $_POST['image_url'];
+    $amount = $_POST['amount'];
+    $status = $_POST['payment_status'];
 
-    if ($image_id) {
-        // Update existing image
-        $query = "UPDATE property_images SET property_id=:property_id, image_url=:image_url WHERE image_id=:image_id";
+    if (empty($payment_id)) {
+        // Insert new payment
+        $query = "INSERT INTO payments (tenant_id, property_id, amount, payment_status, payment_date) 
+                  VALUES (:tenant_id, :property_id, :amount, :payment_status, NOW())";
         $stmt = $conn->prepare($query);
-        $stmt->bindParam(':image_id', $image_id);
     } else {
-        // Insert new image
-        $query = "INSERT INTO property_images (property_id, image_url) VALUES (:property_id, :image_url)";
+        // Update existing payment
+        $query = "UPDATE payments SET tenant_id=:tenant_id, property_id=:property_id, amount=:amount, 
+                  payment_status=:payment_status WHERE payment_id=:payment_id";
         $stmt = $conn->prepare($query);
+        $stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
     }
 
-    $stmt->bindParam(':property_id', $property_id);
-    $stmt->bindParam(':image_url', $image_url);
+    $stmt->bindParam(':tenant_id', $tenant_id, PDO::PARAM_INT);
+    $stmt->bindParam(':property_id', $property_id, PDO::PARAM_INT);
+    $stmt->bindParam(':amount', $amount, PDO::PARAM_STR);
+    $stmt->bindParam(':payment_status', $status, PDO::PARAM_STR);
 
     if ($stmt->execute()) {
-        echo "Property image saved successfully!";
+        echo "Payment saved successfully!";
     } else {
-        echo "Error saving property image!";
+        echo "Error: " . implode(" ", $stmt->errorInfo());
     }
-}
-
-// Delete Property Image
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     parse_str(file_get_contents("php://input"), $_DELETE);
-    $image_id = $_DELETE['image_id'];
+    $payment_id = $_DELETE['payment_id'];
 
-    $query = "DELETE FROM property_images WHERE image_id = :image_id";
+    $query = "DELETE FROM payments WHERE payment_id=:payment_id";
     $stmt = $conn->prepare($query);
-    $stmt->bindParam(':image_id', $image_id);
-
+    $stmt->bindParam(':payment_id', $payment_id, PDO::PARAM_INT);
+    
     if ($stmt->execute()) {
-        echo "Property image deleted successfully!";
+        echo "Payment deleted successfully!";
     } else {
-        echo "Error deleting property image!";
+        echo "Error: " . implode(" ", $stmt->errorInfo());
     }
 }
+
+$conn = null;
 ?>
+

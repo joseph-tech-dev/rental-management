@@ -29,7 +29,7 @@
                     <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
                     <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="text-white"><i class="fab fa-linkedin"></i></a>
-                    <p class="mt-2">Developed for XAMPP PHP Project</p>
+                    <p class="mt-2">6166776B</p>
                 </div>
             </div>
         </div>

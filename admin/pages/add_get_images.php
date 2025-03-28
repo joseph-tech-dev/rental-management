@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 include '/opt/lampp/htdocs/project/config/db.php'; // Database connection
 
 header('Content-Type: application/json'); // Ensure JSON response
@@ -30,12 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle file upload if an image is provided
     if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
-        $target_dir = "/opt/lampp/htdocs/project/uploads/"; // Ensure this directory exists
+        $target_dir = "../uploads/"; // Ensure this directory exists
         $image_name = time() . "_" . basename($_FILES['image_url']['name']);
         $target_file = $target_dir . $image_name;
 
         if (move_uploaded_file($_FILES['image_url']['tmp_name'], $target_file)) {
-            $image_url = "uploads/" . $image_name; // Save relative path
+            $image_url = "http://localhost/project/admin/uploads/" . $image_name; // Save relative path
         } else {
             echo json_encode(["error" => "File upload failed"]);
             exit;

@@ -24,7 +24,7 @@ $rent_amount = $tenant['rent_amount'];
 
 // PayPal API credentials
 $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
-$business_email = "your-paypal-business-email@example.com";
+$business_email = "sb-zeqcb39050476@business.example.com";
 $return_url = "http://localhost/payment/payment_success.php";
 $cancel_url = "http://localhost/payment/payment_success.php";
 $notify_url = "http://localhost/payment/ipn_listener.php";

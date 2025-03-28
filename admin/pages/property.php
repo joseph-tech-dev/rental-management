@@ -61,18 +61,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Delete Property
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    $property_id = $_DELETE['property_id'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST['delete']) && isset($_POST['property_id'])) {
+        $property_id = $_POST['property_id'];
 
-    $query = "DELETE FROM properties WHERE property_id = :property_id";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':property_id', $property_id);
+        try {
+            // Ensure property_id is valid
+            if (empty($property_id)) {
+                die("Error: Property ID is required.");
+            }
 
-    if ($stmt->execute()) {
-        echo "Property deleted successfully!";
+            // Prepare the DELETE query
+            $query = "DELETE FROM properties WHERE id = :property_id";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':property_id', $property_id, PDO::PARAM_INT);
+
+            if ($stmt->execute()) {
+                echo "Property deleted successfully!";
+            } else {
+                echo "Error: Unable to delete property.";
+            }
+        } catch (PDOException $e) {
+            echo "Database Error: " . $e->getMessage();
+        }
     } else {
-        echo "Error deleting property!";
+        echo "Invalid request.";
     }
+} else {
+    echo "Invalid request method.";
 }
 ?>

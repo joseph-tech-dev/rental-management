@@ -1,12 +1,8 @@
 <?php
 session_start();
 
-// Enable error reporting for development
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
-
 // Include database connection (adjust the path as needed)
-require_once '/opt/lampp/htdocs/project/config/db.php';
+require '../config/db.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -78,8 +74,9 @@ try {
     // Handle other exceptions
     die("An error occurred: " . $e->getMessage());
 }
-
-// Include header file (adjust the path as needed)
+?>
+<?php
+// Include header file
 include '../includes/header.php';
 ?>
 
@@ -91,7 +88,6 @@ include '../includes/header.php';
     <title>Tenant Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./tenants_dashboard.css">
 </head>
 <body>
 
@@ -283,10 +279,10 @@ include '../includes/header.php';
     </section>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="./tenants_dashboard.js"></script>
+<!-- comment the below js-->
+--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-<?php include '/opt/lampp/htdocs/project/includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 
 </html>

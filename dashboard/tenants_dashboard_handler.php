@@ -2,15 +2,15 @@
 session_start();
 
 // Enable error reporting for development
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Include database connection (adjust the path as needed)
-require_once '/opt/lampp/htdocs/project/config/db.php';
+require '/opt/lampp/htdocs/project/config/db.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -31,7 +31,8 @@ try {
     }
 
     // Fetch properties available for the tenant to view
-    $query = "SELECT * FROM properties WHERE status = 'available'";
+    $query = "SELECT * FROM properties";
+    //$query = "SELECT * FROM properties WHERE status = 'available'";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -78,7 +79,4 @@ try {
     // Handle other exceptions
     die("An error occurred: " . $e->getMessage());
 }
-
-// Include header file (adjust the path as needed)
-include '../includes/header.php';
 ?>

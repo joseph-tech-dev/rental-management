@@ -109,3 +109,21 @@ CREATE TABLE property_images (
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE CASCADE
 );
+
+ALTER TABLE tenants DROP FOREIGN KEY tenants_ibfk_2;
+ALTER TABLE tenants ADD CONSTRAINT tenants_ibfk_2 FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE CASCADE;
+
+ALTER TABLE leases DROP FOREIGN KEY leases_ibfk_2;
+ALTER TABLE leases ADD CONSTRAINT leases_ibfk_2 FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE CASCADE;
+
+ALTER TABLE payments DROP FOREIGN KEY payments_ibfk_2;
+ALTER TABLE payments ADD CONSTRAINT payments_ibfk_2 FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE CASCADE;
+
+ALTER TABLE maintenance_requests DROP FOREIGN KEY maintenance_requests_ibfk_2;
+ALTER TABLE maintenance_requests ADD CONSTRAINT maintenance_requests_ibfk_2 FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE CASCADE;
+
+ALTER TABLE complaints DROP FOREIGN KEY complaints_ibfk_2;
+ALTER TABLE complaints ADD CONSTRAINT complaints_ibfk_2 FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE CASCADE;
+
+ALTER TABLE property_images DROP FOREIGN KEY property_images_ibfk_1;
+ALTER TABLE property_images ADD CONSTRAINT property_images_ibfk_1 FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE CASCADE;

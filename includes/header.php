@@ -1,7 +1,7 @@
 <?php
 // Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+   session_start();
 }
 
 // Redirect to login page if not logged in (except for login and register pages)
@@ -42,10 +42,10 @@ if (!isset($_SESSION['user_id']) && !in_array($current_page, $public_pages)) {
                 <ul class="navbar-nav me-auto">
                     <?php if(isset($_SESSION['user_id'])): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="dashboard.php">Dashboard</a>
+                            <a class="nav-link" href="tenants_dashboard.php">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="payment.php">Payments</a>
+                            <a class="nav-link" href="../payment/payment.php">Payments</a>
                         </li>
                     <?php endif; ?>
                 </ul>

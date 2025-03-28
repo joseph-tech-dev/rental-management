@@ -12,6 +12,7 @@
             <li><a href="#" class="menu-link" data-page="pages/complaints.php">Complaints</a></li>
             <li><a href="#" class="menu-link" data-page="pages/manage_notifications.php">Notifications</a></li>
             <li><a href="#" class="menu-link" data-page="pages/property_images.php">Property Images</a></li>
+            <li><a href="#" class="menu-link" data-page="Report/reports.php">Reporting</a></li>
         </ul>
         <div class="logout">
             <a href="logout.php">Logout</a>
