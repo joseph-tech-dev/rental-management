@@ -96,5 +96,5 @@ This project is licensed under the MIT License.
 ## 📞 Contact
 For inquiries or support, please contact:
 - 📧 **Email:** predatormj.v3@gmail.com
-- 🖥 **GitHub:** [yourusername](https://github.com/Joseph-tech-dev)
+- 🖥 **GitHub:** [Joseph-tech-dev](https://github.com/Joseph-tech-dev)
 
